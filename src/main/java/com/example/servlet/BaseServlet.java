@@ -1,5 +1,8 @@
 package com.example.servlet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,5 +30,25 @@ public class BaseServlet extends HttpServlet {
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将对象序列化为 json，写回客户端
+     */
+    public void writeValue(Object obj, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getOutputStream(), obj);
+    }
+
+    /**
+     * 将对象序列化为 json 并返回。
+     * @param obj
+     * @return
+     * @throws JsonProcessingException
+     */
+    public String writeValueAsString(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
     }
 }
